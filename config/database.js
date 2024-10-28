@@ -4,7 +4,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'skgvdb'
+    database: 'nbi_users'
 });
 
 db.connect((err) => {
