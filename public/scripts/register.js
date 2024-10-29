@@ -20,4 +20,4 @@ document.getElementById('verifyEmail').addEventListener('click', function() {
         console.error('Error:', error);
         alert('An error occurred. Please try again later.');
     });
-});
+}); 

@@ -26,7 +26,7 @@ exports.registerUser = (req, res) => {
             }
         });
         
-        const mailOptions = {
+        const mailOptions = {   
             from: 'your-email@gmail.com',
             to: 'recipient-email@gmail.com',
             subject: 'Test Email',
@@ -40,28 +40,6 @@ exports.registerUser = (req, res) => {
             console.log('Email sent:', info.response);
         });
     });
-};
-
-exports.verifyOtp = (req, res) => {
-    const { email, otp } = req.body;
-
-    if (otpStorage[email] && otpStorage[email] == otp) {
-        const { user_id, firstname, lastname, age, gender, contact_num, sitio, barangay, province, roles, password } = req.body;
-
-        bcrypt.hash(password, 10, (err, hashedPassword) => {
-            if (err) return res.status(500).send('Error in password encryption.');
-
-            const userData = [user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, hashedPassword];
-            User.create(userData, (err, result) => {
-                if (err) return res.status(500).send('Error saving user to database.');
-
-                delete otpStorage[email]; 
-                res.redirect('/login'); 
-            });
-        });
-    } else {
-        return res.status(400).send('Invalid OTP. Please try again.');
-    }
 };
 
 exports.loginPage = (req, res) => {
