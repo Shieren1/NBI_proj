@@ -77,25 +77,9 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Email container styles */
 .email-container {
     display: flex;
     align-items: center;
-}
-
-.verify-btn {
-    margin-left: 10px;
-    padding: 10px 15px;
-    background-color: #28a745; 
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.verify-btn:hover {
-    background-color: #218838; 
 }
 
 .input-error {
