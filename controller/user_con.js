@@ -1,67 +1,65 @@
-    const User = require('../models/user_info'); 
-    const bcrypt = require('bcrypt');
+const User = require('../models/user_info');
+const bcrypt = require('bcrypt');
 
-    exports.registerPage = (req, res) => {
-        res.render('register'); 
-    };
+// Render the registration page
+exports.registerPage = (req, res) => {
+    // Ensure successMessage is always passed to the view
+    res.render('register', { successMessage: null });
+};
 
-    exports.registerUser = (req, res) => {
-        const { user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, password } = req.body;
+// Handle user registration
+exports.registerUser = (req, res) => {
+    const { user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, password } = req.body;
 
-        User.findByEmail(email, (err, existingUser) => {
-            if (err) return res.status(500).send('Database error.');
-            if (existingUser) {
-                return res.status(400).send('User already exists.');
+    // Define additional values as needed
+    const verification_token = null; // Set according to your logic
+    const verified = 0; // 0 for not verified
+    const token_expiry = null; // Set according to your needs
+
+    // Check if the email already exists
+    User.findByEmail(email, (err, existingUser) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).send('Database error.');
+        }
+        if (existingUser) {
+            return res.status(400).send('User already exists.');
+        }
+
+        // Hash the password
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+            if (err) {
+                console.error('Error hashing password:', err);
+                return res.status(500).send('Error hashing password.');
             }
 
-            bcrypt.hash(password, 10, (err, hashedPassword) => {
-                if (err) return res.status(500).send('Error hashing password.');
-
-                const userData = [user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, hashedPassword];
-                
-                User.create(userData, (err, results) => {
-                    if (err) {
-                        console.error('Error details:', err); 
-                        return res.status(500).send('Error saving user to database.');
-                    }
-
-                    res.send('Registration successful!');
-                });
-            });
-        });
-    };
-
-    exports.loginPage = (req, res) => {
-        res.render('login');
-    };
-
-    exports.loginUser = (req, res) => {
-        const { email, password } = req.body;
-
-        User.findByEmail(email, (err, user) => {
-            if (err) return res.status(500).send('Database error.');
-            if (!user) {
-                return res.status(400).send('Invalid email or password.');
-            }
-
-            bcrypt.compare(password, user.password, (err, match) => {
-                if (err) return res.status(500).send('Error comparing passwords.');
-                if (!match) {
-                    return res.status(400).send('Invalid email or password.');
+            // Prepare user data for insertion
+            const userData = [
+                user_id, firstname, lastname, age, gender, contact_num, email, 
+                sitio, barangay, province, roles, verification_token, verified, token_expiry, hashedPassword
+            ];
+            
+            // Insert the new user into the database
+            User.create(userData, (err, results) => {
+                if (err) {
+                    console.error('Error saving user to database:', err);
+                    return res.status(500).send('Error saving user to database.');
                 }
 
-                req.session.userId = user.user_id; 
-                req.session.userRole = user.roles; 
-                res.redirect('/dashboard'); 
+                // Registration successful, render success message
+                res.render('register', { successMessage: 'Registration successful!' });
             });
         });
-    };
+    });
+};
 
-    exports.logoutUser = (req, res) => {
-        req.session.destroy((err) => {
-            if (err) {
-                return res.status(500).send('Error logging out. Please try again.');
-            }
-            res.redirect('/login');
-        });
-    };
+// Handle user logout
+exports.logoutUser = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error logging out:', err);
+            return res.status(500).send('Error logging out. Please try again.');
+        }
+        res.redirect('/login');
+    });
+};

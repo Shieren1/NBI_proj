@@ -71,6 +71,19 @@
         </form>
         <p>Already have an account? <a href="/login">Login here</a></p>
     </div>
+
+    <div id="successMessage" style="display:none;">
+        <%= successMessage || '' %>
+    </div>
+    
     <script src="/scripts/register.js"></script> 
+
+    <script>
+        const successMessage = "<%= successMessage || '' %>";
+        if (successMessage) {
+            alert(successMessage); 
+            document.getElementById('successMessage').style.display = 'block';
+        }
+    </script>
 </body>
 </html>

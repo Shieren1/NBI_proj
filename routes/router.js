@@ -4,7 +4,5 @@ const UserCon = require('../controller/user_con');
 
 router.get('/register', UserCon.registerPage);
 router.post('/register', UserCon.registerUser);
-router.get('/login', UserCon.loginPage);
-router.post('/login', UserCon.loginUser); 
 
 module.exports = router;
