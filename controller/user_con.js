@@ -1,5 +1,7 @@
 const User = require('../models/user_info');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const emailService = require('../services/email_service.js'); // Make sure to import the correct path
 
 // Render the registration page
 exports.registerPage = (req, res) => {
@@ -12,9 +14,9 @@ exports.registerUser = (req, res) => {
     const { user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, password } = req.body;
 
     // Define additional values as needed
-    const verification_token = null; // Set according to your logic
+    const verificationToken = crypto.randomBytes(32).toString('hex'); // Generate a verification token
     const verified = 0; // 0 for not verified
-    const token_expiry = null; // Set according to your needs
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // Set to 24 hours
 
     // Check if the email already exists
     User.findByEmail(email, (err, existingUser) => {
@@ -36,7 +38,7 @@ exports.registerUser = (req, res) => {
             // Prepare user data for insertion
             const userData = [
                 user_id, firstname, lastname, age, gender, contact_num, email, 
-                sitio, barangay, province, roles, verification_token, verified, token_expiry, hashedPassword
+                sitio, barangay, province, roles, verificationToken, verified, tokenExpiry, hashedPassword
             ];
             
             // Insert the new user into the database
@@ -46,8 +48,16 @@ exports.registerUser = (req, res) => {
                     return res.status(500).send('Error saving user to database.');
                 }
 
-                // Registration successful, render success message
-                res.render('register', { successMessage: 'Registration successful!' });
+                // Send verification email
+                emailService.sendVerificationEmail(email, verificationToken)
+                    .then(() => {
+                        // Registration successful, render success message
+                        res.render('register', { successMessage: 'Registration successful! Please verify your email.' });
+                    })
+                    .catch(emailErr => {
+                        console.error('Error sending verification email:', emailErr);
+                        res.status(500).send('Registration successful, but failed to send verification email.');
+                    });
             });
         });
     });
@@ -61,5 +71,33 @@ exports.logoutUser = (req, res) => {
             return res.status(500).send('Error logging out. Please try again.');
         }
         res.redirect('/login');
+    });
+};
+
+// Verify email token
+exports.verifyEmail = (req, res) => {
+    const token = req.params.token;
+
+    User.findByVerificationToken(token, (err, user) => {
+        if (err) {
+            console.error('Error finding user by token:', err);
+            return res.status(500).send('Server error.');
+        }
+        if (!user) {
+            return res.status(400).send('Invalid verification token.');
+        }
+
+        if (user.token_expiry < new Date()) {
+            return res.status(400).send('Verification token has expired.');
+        }
+
+        // Update the user's verification status
+        User.verifyUser(user.id, (err) => {
+            if (err) {
+                console.error('Error verifying user:', err);
+                return res.status(500).send('Server error during verification.');
+            }
+            res.redirect('/login?verified=true');
+        });
     });
 };

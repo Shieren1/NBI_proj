@@ -5,17 +5,44 @@ const User = {
     findByEmail: (email, callback) => {
         const query = 'SELECT * FROM users WHERE email = ?';
         db.query(query, [email], (err, results) => {
-            if (err) callback(err, null);
-            else callback(null, results[0]);
+            if (err) return callback(err, null);
+            return callback(null, results[0]);
         });
     },
+
     create: (userData, callback) => {
-        const query = 'INSERT INTO users (user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, verification_token, verified, token_expiry, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const query = `
+            INSERT INTO users (user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, verification_token, verified, token_expiry, password) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         db.query(query, userData, (err, results) => {
-            if (err) callback(err, null);
-            else callback(null, results);
+            if (err) return callback(err, null);
+            return callback(null, results);
         });
-    }
+    },
+
+    findByVerificationToken: (token, callback) => {
+        const query = 'SELECT * FROM users WHERE verification_token = ?';
+        db.query(query, [token], (err, results) => {
+            if (err) return callback(err, null);
+            return callback(null, results[0]);
+        });
+    },
+
+    verifyUser: (userId, callback) => {
+        const query = 'UPDATE users SET verified = 1, verification_token = NULL, token_expiry = NULL WHERE id = ?';
+        db.query(query, [userId], (err, results) => {
+            if (err) return callback(err, null);
+            return callback(null, results);
+        });
+    },
+
+    setStatus: (userId, status, callback) => {
+        const query = 'UPDATE users SET status = ? WHERE id = ?';
+        db.query(query, [status, userId], (err, results) => {
+            if (err) return callback(err, null);
+            return callback(null, results);
+        });
+    },
 };
 
 // Function to create the users table if it doesn't exist
@@ -37,7 +64,8 @@ function createUsersTable() {
             verification_token VARCHAR(250),
             verified TINYINT(1) DEFAULT 0,
             token_expiry DATETIME,
-            password VARCHAR(250)
+            password VARCHAR(250),
+            status VARCHAR(50) DEFAULT 'Active'
         )
     `;
 
