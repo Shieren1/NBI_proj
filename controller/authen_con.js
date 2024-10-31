@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const User = require('../models/user_info'); // Update path if necessary
-const emailService = require('../services/email_service.js'); // Update path if necessary
+const User = require('../models/user_info'); 
+const emailService = require('../services/email_service.js'); 
 
 const register = async (req, res) => {
     const { firstname, lastname, email, password, age, gender, contact_num, sitio, barangay, province, roles } = req.body;
@@ -22,7 +22,7 @@ const register = async (req, res) => {
         const verificationToken = crypto.randomBytes(32).toString('hex');
 
         // Insert the user data into the database
-        const userData = [ /* user data values including hashed password and verificationToken */ ];
+        const userData = [  ];
         await User.create(userData);
 
         // Send the verification email

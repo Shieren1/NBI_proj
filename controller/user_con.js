@@ -1,22 +1,19 @@
 const User = require('../models/user_info');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const emailService = require('../services/email_service.js'); // Make sure to import the correct path
+const emailService = require('../services/email_service.js'); 
 
-// Render the registration page
 exports.registerPage = (req, res) => {
-    // Ensure successMessage is always passed to the view
     res.render('register', { successMessage: null });
 };
 
-// Handle user registration
 exports.registerUser = (req, res) => {
     const { user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, password } = req.body;
 
-    // Define additional values as needed
-    const verificationToken = crypto.randomBytes(32).toString('hex'); // Generate a verification token
-    const verified = 0; // 0 for not verified
-    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // Set to 24 hours
+  
+    const verificationToken = crypto.randomBytes(32).toString('hex'); 
+    const verified = 0; 
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); 
 
     // Check if the email already exists
     User.findByEmail(email, (err, existingUser) => {
