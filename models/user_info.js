@@ -1,7 +1,8 @@
 const db = require('../config/database');
+const bcrypt = require('bcrypt');
 
-// Define User model methods
 const User = {
+    // Find user by email
     findByEmail: (email, callback) => {
         const query = 'SELECT * FROM users WHERE email = ?';
         db.query(query, [email], (err, results) => {
@@ -10,6 +11,25 @@ const User = {
         });
     },
 
+    // Find user by user_id and role (for login)
+    findByUserIdAndRole: (user_id, role, callback) => {
+        const query = 'SELECT * FROM users WHERE user_id = ? AND roles = ?';
+        db.query(query, [user_id, role], (err, results) => {
+            if (err) return callback(err, null);
+            return callback(null, results[0]);
+        });
+    },
+
+    // Find user by verification token
+    findByVerificationToken: (token, callback) => {
+        const query = 'SELECT * FROM users WHERE verification_token = ?';
+        db.query(query, [token], (err, results) => {
+            if (err) return callback(err, null);
+            return callback(null, results[0]);
+        });
+    },
+
+    // Create a new user
     create: (userData, callback) => {
         const query = `
             INSERT INTO users (user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, verification_token, verified, token_expiry, password) 
@@ -20,14 +40,7 @@ const User = {
         });
     },
 
-    findByVerificationToken: (token, callback) => {
-        const query = 'SELECT * FROM users WHERE verification_token = ?';
-        db.query(query, [token], (err, results) => {
-            if (err) return callback(err, null);
-            return callback(null, results[0]);
-        });
-    },
-
+    // Verify a user by setting verified status and clearing the token
     verifyUser: (userId, callback) => {
         const query = 'UPDATE users SET verified = 1, verification_token = NULL, token_expiry = NULL WHERE id = ?';
         db.query(query, [userId], (err, results) => {
@@ -36,6 +49,7 @@ const User = {
         });
     },
 
+    // Update user status
     setStatus: (userId, status, callback) => {
         const query = 'UPDATE users SET status = ? WHERE id = ?';
         db.query(query, [status, userId], (err, results) => {
@@ -68,7 +82,7 @@ function createUsersTable() {
             status VARCHAR(50) DEFAULT 'Active'
         )
     `;
-
+    
     db.query(query, (err, result) => {
         if (err) {
             console.error('Error creating users table:', err);

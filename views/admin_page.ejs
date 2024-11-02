@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin_page.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome">
+            <h2>Welcome, <%= user.firstname %> <%= user.lastname %>!</h2>
+            <p>Your role: <strong><%= user.roles %></strong></p>
+        </section>
+
+        <section class="actions">
+            <h2>Admin Actions</h2>
+            <ul>
+                <li><a href="/manage-users">Manage Users</a></li>
+                <li><a href="/view-reports">View Reports</a></li>
+                <li><a href="/settings">Settings</a></li>
+            </ul>
+        </section>
+
+        <section class="statistics">
+            <h2>Site Statistics</h2>
+            <div class="stat">
+                <h3>Total Users</h3>
+                <p><%= stats.totalUsers %></p>
+            </div>
+            <div class="stat">
+                <h3>Active Users</h3>
+                <p><%= stats.activeUsers %></p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

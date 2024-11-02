@@ -1,0 +1,81 @@
+/* General layout */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+nav a {
+    color: #ecf0f1;
+    text-decoration: none;
+    margin-left: 1em;
+    font-weight: bold;
+}
+
+main {
+    padding: 2em;
+}
+
+.welcome {
+    background-color: #3498db;
+    color: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    margin-bottom: 1.5em;
+}
+
+.welcome h2 {
+    margin: 0;
+}
+
+.actions, .statistics {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 1.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5em;
+}
+
+.actions h2, .statistics h2 {
+    color: #34495e;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.actions ul li a, .statistics .stat h3 {
+    font-size: 1.1em;
+    color: #2c3e50;
+    text-decoration: none;
+    display: block;
+    padding: 0.5em 0;
+}
+
+.actions ul li a:hover {
+    text-decoration: underline;
+    color: #2980b9;
+}
+
+.statistics .stat {
+    background-color: #ecf0f1;
+    border-radius: 5px;
+    padding: 1em;
+    text-align: center;
+    margin-top: 1em;
+}
