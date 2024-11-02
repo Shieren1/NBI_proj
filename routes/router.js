@@ -6,6 +6,7 @@ const AuthCon = require('../controller/authen_con');
 router.get('/register', UserCon.registerPage);
 router.post('/register', UserCon.registerUser);
 router.get('/verify/:token', UserCon.verifyEmail);
+router.get('/profile', UserCon.profilePage);
 
 
 module.exports = router;

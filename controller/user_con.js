@@ -10,12 +10,10 @@ exports.registerPage = (req, res) => {
 exports.registerUser = (req, res) => {
     const { user_id, firstname, lastname, age, gender, contact_num, email, sitio, barangay, province, roles, password } = req.body;
 
-  
     const verificationToken = crypto.randomBytes(32).toString('hex'); 
     const verified = 0; 
     const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); 
 
-    // Check if the email already exists
     User.findByEmail(email, (err, existingUser) => {
         if (err) {
             console.error('Database error:', err);
@@ -25,30 +23,25 @@ exports.registerUser = (req, res) => {
             return res.status(400).send('User already exists.');
         }
 
-        // Hash the password
         bcrypt.hash(password, 10, (err, hashedPassword) => {
             if (err) {
                 console.error('Error hashing password:', err);
                 return res.status(500).send('Error hashing password.');
             }
 
-            // Prepare user data for insertion
             const userData = [
                 user_id, firstname, lastname, age, gender, contact_num, email, 
                 sitio, barangay, province, roles, verificationToken, verified, tokenExpiry, hashedPassword
             ];
             
-            // Insert the new user into the database
             User.create(userData, (err, results) => {
                 if (err) {
                     console.error('Error saving user to database:', err);
                     return res.status(500).send('Error saving user to database.');
                 }
 
-                // Send verification email
                 emailService.sendVerificationEmail(email, verificationToken)
                     .then(() => {
-                        // Registration successful, render success message
                         res.render('register', { successMessage: 'Registration successful! Please verify your email.' });
                     })
                     .catch(emailErr => {
@@ -88,7 +81,6 @@ exports.verifyEmail = (req, res) => {
             return res.status(400).send('Verification token has expired.');
         }
 
-        // Update the user's verification status
         User.verifyUser(user.id, (err) => {
             if (err) {
                 console.error('Error verifying user:', err);
@@ -97,4 +89,17 @@ exports.verifyEmail = (req, res) => {
             res.redirect('/login?verified=true');
         });
     });
+};
+
+exports.profilePage = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).send('User not authenticated');
+        }
+        const user = await User.findById(req.user.id); // Ensure req.user is populated correctly
+        res.render('profilepage', { user }); // Ensure 'profilepage.ejs' is the correct view
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 };

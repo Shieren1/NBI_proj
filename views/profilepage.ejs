@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBI Agent Profile</title>
+    <link rel="stylesheet" href="/css/profilepage.css">
+</head>
+<body>
+    <header class="nbi-header">
+        <div class="branding">
+            <img src="/images/nbi-logo.png" alt="NBI Logo" class="logo">
+            <h1>National Bureau of Investigation</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Dashboard</a>
+            <a href="#">Cases</a>
+            <a href="#">Reports</a>
+            <a href="/logout">Logout</a> <!-- Link to logout -->
+        </nav>
+    </header>
+    <main class="profile-container">
+        <section class="profile-info">
+            <img src="<%= user.profilePic || '/images/profile-pic.jpg' %>" alt="Agent Profile Picture" class="profile-pic">
+            <div class="details">
+                <h2><%= user.firstname %> <%= user.lastname %></h2>
+                <p>ID: <%= user.user_id %></p>
+                <p>Rank: <%= user.rank || 'N/A' %></p> <!-- Optional rank field -->
+                <button class="btn-primary">Update Profile</button>
+            </div>
+        </section>
+        <section class="tabs-section">
+            <div class="tabs">
+                <button class="tab-button active" onclick="showTab('overview')">Overview</button>
+                <button class="tab-button" onclick="showTab('cases')">Cases</button>
+                <button class="tab-button" onclick="showTab('settings')">Settings</button>
+            </div>
+            <div class="tab-content" id="overview">Overview of recent activity and performance metrics.</div>
+            <div class="tab-content" id="cases" style="display:none;">List of active and closed cases.</div>
+            <div class="tab-content" id="settings" style="display:none;">Profile and account settings.</div>
+        </section>
+    </main>
+    <footer class="nbi-footer">
+        <p>&copy; 2024 National Bureau of Investigation - All Rights Reserved.</p>
+    </footer>
+    <script>
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+            document.getElementById(tab).style.display = 'block';
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.tab-button[onclick="showTab('${tab}')"]`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
