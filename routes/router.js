@@ -15,6 +15,9 @@ router.get('/admin', UserCon.admin_page);
 router.get('/user', UserCon.user_page);
 router.get('/profile', UserCon.profile);
 
+router.get('/admindashboard', UserCon.admin_dashboard);
+
+
 
 
 

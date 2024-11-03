@@ -149,7 +149,12 @@ const users = {
 
     profile: (req, res) => {
         res.render('profile');
-      }
+    },
+
+    admin_dashboard:  (req, res) => {
+            res.render('admin_dashboard');
+    }
+
 };
 
 module.exports = users;
