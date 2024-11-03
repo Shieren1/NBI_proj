@@ -136,8 +136,8 @@ const users = {
 
     admin_page: (req, res) => {
         const stats = {
-            totalUsers: 150,   // Example data; fetch actual count from DB
-            activeUsers: 120,  // Example data; fetch actual count from DB
+            totalUsers: 150,   
+            activeUsers: 120, 
         };
 
         res.render('admin_page', { user: req.session.user, stats });
@@ -145,7 +145,11 @@ const users = {
 
     user_page: (req, res) => {
         res.render('user_page', { user: req.session.user });
-    }
+    },
+
+    profile: (req, res) => {
+        res.render('profile');
+      }
 };
 
 module.exports = users;

@@ -21,10 +21,10 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', routes);
 app.use((req, res, next) => {
-    if (req.session.user || req.path === '/register') {
+    if (req.session.user || req.path === '/login') {
         next();
     } else {
-        res.redirect('/register');
+        res.redirect('/login');
     }
 });
 
