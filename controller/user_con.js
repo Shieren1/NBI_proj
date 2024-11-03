@@ -153,7 +153,27 @@ const users = {
 
     admin_dashboard:  (req, res) => {
             res.render('admin_dashboard');
-    }
+    },
+
+    admin_users:  (req, res) => {
+        res.render('admin_users');
+    },
+
+    admin_upload:  (req, res) => {
+    res.render('admin_upload');
+    },
+
+    admin_notification:  (req, res) => {
+    res.render('admin_notification');
+    },
+
+    admin_recent:  (req, res) => {
+    res.render('admin_recent');
+    },
+
+    admin_trash:  (req, res) => {
+    res.render('admin_trash');
+    },
 
 };
 
