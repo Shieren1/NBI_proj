@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Users</title>
   <style>
     body {
       margin: 0;
@@ -91,23 +91,30 @@
       margin-bottom: 20px;
     }
 
-    .card {
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
       background-color: #ffffff;
-      border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 20px;
+      border-radius: 8px;
+      overflow: hidden;
     }
 
-    .card-title {
-      font-size: 18px;
+    .user-table th,
+    .user-table td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .user-table th {
+      background-color: #005b99;
+      color: #ffffff;
       font-weight: bold;
     }
 
-    .card-content {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #555555;
+    .user-table tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
   </style>
 </head>
@@ -119,8 +126,8 @@
     </div>
     <nav>
       <ul>
-        <li><a href="/admindashboard" class="active"><i class="nav-item nav-link"></i> Dashboard</a></li>
-        <li><a href="/adminusers"><i class="nav-item nav-link"></i> Users</a></li>
+        <li><a href="/admindashboard"><i class="nav-item nav-link"></i> Dashboard</a></li>
+        <li><a href="/adminusers" class="active"><i class="nav-item nav-link"></i> Users</a></li>
         <li><a href="/adminupload"><i class="nav-item nav-link"></i> Upload</a></li>
         <li><a href="/adminnotification"><i class="nav-item nav-link"></i> Notification</a></li>
         <li><a href="/adminrecent"><i class="nav-item nav-link"></i> Recent</a></li>
@@ -136,37 +143,44 @@
 
   <!-- Main Content Area -->
   <div class="content">
-    <div class="header">Dashboard</div>
-    
-    <!-- Sample Card 1 -->
-    <div class="card">
-      <div class="card-title">Welcome to the Dashboard</div>
-      <div class="card-content">
-        Here is some introductory text about your dashboard. Use this space to provide a quick overview or important notifications.
-      </div>
-    </div>
-    
-    <!-- Sample Card 2 -->
-    <div class="card">
-      <div class="card-title">Recent Activity</div>
-      <div class="card-content">
-        <ul>
-          <li>User John Doe uploaded a file.</li>
-          <li>New notification: System update available.</li>
-          <li>Admin Jane Smith added a new user.</li>
-        </ul>
-      </div>
-    </div>
-    
-    <!-- Sample Card 3 -->
-    <div class="card">
-      <div class="card-title">Statistics</div>
-      <div class="card-content">
-        <p>Total Users: 152</p>
-        <p>Files Uploaded: 453</p>
-        <p>Notifications Sent: 89</p>
-      </div>
-    </div>
+    <div class="header">Users</div>
+
+    <!-- Sample Users Table -->
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>001</td>
+          <td>John Doe</td>
+          <td>johndoe@example.com</td>
+          <td>Admin</td>
+          <td>Active</td>
+        </tr>
+        <tr>
+          <td>002</td>
+          <td>Jane Smith</td>
+          <td>janesmith@example.com</td>
+          <td>User</td>
+          <td>Inactive</td>
+        </tr>
+        <tr>
+          <td>003</td>
+          <td>Robert Brown</td>
+          <td>robertbrown@example.com</td>
+          <td>Editor</td>
+          <td>Active</td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
+    </table>
   </div>
 </body>
 </html>

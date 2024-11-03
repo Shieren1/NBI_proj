@@ -23,7 +23,4 @@ router.get('/adminrecent', UserCon.admin_recent);
 router.get('/admintrash', UserCon.admin_trash);
 
 
-
-
-
 module.exports = router;

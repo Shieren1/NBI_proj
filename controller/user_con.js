@@ -99,6 +99,9 @@ const users = {
     },
 
     logoutUser: (req, res) => {
+        //dinagdag ko lang -Ang
+        res.redirect('/login');
+
         req.session.destroy((err) => {
             if (err) {
                 console.error('Error logging out:', err);
@@ -173,8 +176,7 @@ const users = {
 
     admin_trash:  (req, res) => {
     res.render('admin_trash');
-    },
-
+    }
 };
 
 module.exports = users;
