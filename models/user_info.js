@@ -96,3 +96,4 @@ function createUsersTable() {
 createUsersTable();
 
 module.exports = User;
+
